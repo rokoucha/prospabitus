@@ -134,6 +134,7 @@ func TestExportNoOverwriteAndCleanup(t *testing.T) {
 	}
 }
 func TestHelpDoctorAndEmbeddedSkill(t *testing.T) {
+	t.Setenv("HOME", t.TempDir())
 	data := t.TempDir()
 	r := invoke(t, data, 0, "doctor")
 	if len(r["sources"].([]any)) != 3 {

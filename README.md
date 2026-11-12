@@ -1,6 +1,6 @@
 # prospabitus
 
-Codex / Claude Codeのセッションをローカルに保全し、後からAIが検索・振り返りに使うJSON CLI。Go 1.26以上でビルドし、単体バイナリとして動きます。実行時にPython・CGO・ネットワーク接続は不要です。SQLiteに原本と検索用データを保存します。
+コーディングエージェントが自らをふりかえるためのツール
 
 ## 使い始める
 
@@ -78,37 +78,8 @@ Codexはresponse_item.messageを正規化し、表示用item_completedの発言�
 
 最小版では変更されたファイルの全体を各revisionに保存するため、長いセッションへの頻繁な同期では容量が増えます。大規模データ向けの差分チャンク化・FTS・保持期限はまだありません。欠損した既定ルートは `missing_roots`、未完末尾は `pending_files`、解析失敗・競合は `errors` に出ます。`sync` の成功だけで全製品の全履歴が揃ったとは判断しないでください。
 
-## 初期プロトタイプからの再取り込み
+## License
 
-実ログ検証で、内部セッションの検索混入とClaude再開ログの識別を修正しました。修正前のDBは、同じ原本を同期しても投影を作り直さないため、別の新規プロファイルへ再取り込みしてください。原本のあるうちに新旧を比較し、旧DBの保全が必要なら残してください。まだ一般公開前のため、自動マイグレーションは実装していません。
+Copyright (c) 2026 Rokoucha
 
-## 拡張・開発
-
-```sh
-go test -race ./...
-go vet ./...
-CGO_ENABLED=0 go build ./cmd/prospabitus
-```
-
-構成はconstultoを参考に、`cmd/prospabitus`（起動）、`internal/cli`（Kongでの引数・JSON出力）、`internal/agent`（製品別パーサー）、`internal/archive`（SQLite保存・照会）、`assets`（埋め込みSkill）に分けています。製品の追加は `agent.Adapters` に名前・既定ルート・パーサーを登録します。現行の取得形式はJSONLです。動的プラグインや汎用バックエンド層は設けていません。
-
-## Python版からの移行
-
-Go版は既存のSQLite v1アーカイブをそのまま使用します。再取り込みは不要で、原本・revision/event ID・変更カーソル・保存済み本文は維持します。新規取り込みのツール本文はJSONをコンパクトに整形します。JSONの値は変えませんが、その文字列の空白や文字位置はPython版で新規解析した場合とは異なることがあります。通常の発言本文はUnicode文字単位で同じ扱いです。
-
-ローカルの旧アーカイブとの全revision照合を再実行する場合（読み取り専用、CIでは実行しません）：
-
-```sh
-PROSPABITUS_PARITY_ARCHIVE=/absolute/path/archive.sqlite3 \
-  go test ./internal/archive -run TestExistingArchiveProjectionParity -v -count=1
-```
-
-## CIとリリース
-
-- GitHub ActionsのCIはUbuntu/macOSでgofmt、`go test -race`、`go vet`、CGO無効ビルドを実行します。別jobでGoReleaserのsnapshotを作り、darwin/linux × amd64/arm64の配布物も検証します。
-- mainへのpush時は、constultoと同じtagpr → GoReleaserの流れでリリースPR・タグ・GitHub Releaseを管理します。通常のPRは公開を行いません。`.tagpr` はtagpr自身でReleaseを作らず、GoReleaserが作成します。
-- GitHubリポジトリ側でActionsによるPR作成を許可する設定が必要です。利用する認証は `GITHUB_TOKEN` のみです。Homebrew tap等への配信はまだ設定していません。
-- RenovateでGo依存とSHA固定のActionsを更新します。
-- ローカルの公開なし検証は `goreleaser check` と `goreleaser release --snapshot --clean`。実ログ・`.local-validation` は配布物やCIに含めません。
-
-AI向け手順は `prospabitus skill show` に同梱。外部サービスへの送信、Sophie接続、定期実行、改善案の自動生成、指示の自動書き換えは実装していません。
+Released under the MIT license, see LICENSE.

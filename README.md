@@ -38,6 +38,27 @@ prospabitus --profile work sync
 
 `--source` は毎回指定する必要がありません。明示すると、そのプロファイルの取得先一覧を置き換えます。複数ディレクトリを指定できます。保存先は `${XDG_DATA_HOME:-~/.local/share}/prospabitus/<profile>/archive.sqlite3`。`--data-dir` でルートを変更できます。グローバル引数はサブコマンドの前に置きます。個人・会社のデータは別プロファイル／別端末で管理してください。プロファイル自体はOSのアクセス制御ではありません。
 
+## Skillのインストール
+
+Skillは任意です。CLIだけでも使えますが、AIに振り返りを頼む場合は同梱の検索・前後確認・根拠の扱い方をインストールできます。
+
+```sh
+prospabitus skill install --agent codex --dry-run
+prospabitus skill install --agent codex
+prospabitus skill install --agent claude
+prospabitus doctor
+
+# 更新前の差分を確認し、変更済みのSkillを明示的に置き換える
+prospabitus skill install --agent codex --dry-run
+prospabitus skill install --agent codex --force
+```
+
+Codexは `~/.codex/skills/prospabitus/SKILL.md`、Claude Codeは `~/.claude/skills/prospabitus/SKILL.md` に配置します。constultoと同じ標準のホーム配下を使い、`--profile`、`--data-dir`、`CODEX_HOME`、`CLAUDE_CONFIG_DIR` では配置先を変えません。
+
+出力は既存コマンドと同じJSONです。`--dry-run` は配置先と、既存内容が異なる場合の差分を返すだけでファイルを作りません。同じ内容なら何も変更せず成功し、異なる内容の上書きは `--force` が必要です。配置先のファイルがsymlinkや特殊ファイルの場合は上書きしません。`doctor` の `skills` で未導入・現在版・古い／変更済み等の状態を確認できます。
+
+CLIを更新しても配置済みSkillは自動更新しません。差分を確認して必要に応じて再インストールしてください。インストールしない場合は `prospabitus skill show` の内容をその都度エージェントに読ませることもできます。
+
 ## セッションを読む
 
 ```sh

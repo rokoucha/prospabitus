@@ -88,7 +88,8 @@ type commandLine struct {
 		Output    string `required:""`
 	} `cmd:"" help:"Restore raw JSONL without overwriting an existing file."`
 	Skill struct {
-		Show struct{} `cmd:"" help:"Print the bundled agent Skill."`
+		Show    struct{}            `cmd:"" help:"Print the bundled agent Skill."`
+		Install skillInstallCommand `cmd:"" help:"Install or update the bundled agent Skill."`
 	} `cmd:""`
 	Version struct{} `cmd:"" help:"Print build version."`
 }
@@ -253,6 +254,9 @@ func run(ctx context.Context, c *commandLine, command string) (map[string]any, e
 	if !regexp.MustCompile(`^[A-Za-z0-9_-]{1,64}$`).MatchString(c.Profile) {
 		return nil, fmt.Errorf("profile must contain 1-64 ASCII letters, digits, _ or -")
 	}
+	if command == "skill install" {
+		return installSkill(c.Skill.Install)
+	}
 	if command == "skill show" {
 		return map[string]any{"text": assets.Skill}, nil
 	}
@@ -266,7 +270,7 @@ func run(ctx context.Context, c *commandLine, command string) (map[string]any, e
 			stat, err := os.Stat(r.Path)
 			out = append(out, map[string]any{"agent": r.Agent, "root": r.Path, "exists": err == nil && stat.IsDir()})
 		}
-		return map[string]any{"version": Version, "commit": Commit, "go": runtime.Version(), "sources": out}, nil
+		return map[string]any{"version": Version, "commit": Commit, "go": runtime.Version(), "sources": out, "skills": map[string]skillCheck{"codex": inspectSkill("codex"), "claude": inspectSkill("claude")}}, nil
 	}
 	var sourceRoots []archive.Source
 	var err error

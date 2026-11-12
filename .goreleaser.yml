@@ -31,3 +31,21 @@ checksum:
 
 changelog:
   sort: asc
+
+homebrew_casks:
+  - name: prospabitus
+    binaries: [prospabitus]
+    homepage: https://github.com/rokoucha/prospabitus
+    description: Archive local coding-agent sessions for search and retrospection
+    repository:
+      owner: rokoucha
+      name: homebrew-tap
+      branch: main
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    hooks:
+      post:
+        install_steps: |
+          on_macos do
+            run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{ .StagedPath }}/prospabitus"],
+                                 writable_paths: ["prospabitus"]
+          end

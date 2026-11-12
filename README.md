@@ -4,6 +4,16 @@
 
 ## 使い始める
 
+Homebrew（7以上）：
+
+```sh
+brew tap rokoucha/tap
+brew trust --cask rokoucha/tap/prospabitus
+brew install --cask rokoucha/tap/prospabitus
+```
+
+ソースからビルドする場合：
+
 ```sh
 go build -o prospabitus ./cmd/prospabitus
 # PATHへインストールする場合は go install ./cmd/prospabitus
@@ -77,6 +87,10 @@ Codexはresponse_item.messageを正規化し、表示用item_completedの発言�
 内容が有効な原本のprefix拡張ではない場合、競合revisionを保全し、通常検索の原本は切り替えません。`sync` は `ok=false` とactive/conflict revisionを返します。`revisions` → `events --revision` / `export --revision` で双方を確認できます。同じ競合の再実行で保存量・changesは増えません。圧縮等による正当な書き換えも競合になります。自動解決は未実装です。
 
 最小版では変更されたファイルの全体を各revisionに保存するため、長いセッションへの頻繁な同期では容量が増えます。大規模データ向けの差分チャンク化・FTS・保持期限はまだありません。欠損した既定ルートは `missing_roots`、未完末尾は `pending_files`、解析失敗・競合は `errors` に出ます。`sync` の成功だけで全製品の全履歴が揃ったとは判断しないでください。
+
+## Homebrew tapの更新
+
+リリース時にGoReleaserが `rokoucha/homebrew-tap` のcaskを更新します。prospabitusのActions secret `HOMEBREW_TAP_TOKEN` に、tapだけを対象とし `Contents: Read and write` を許可したfine-grained PATを登録してください。`GITHUB_TOKEN` はprospabitusのRelease公開に使用します。
 
 ## License
 

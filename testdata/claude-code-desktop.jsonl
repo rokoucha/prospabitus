@@ -1,0 +1,2 @@
+{"type": "user", "sessionId": "fixture-claude-code-desktop", "uuid": "user-id", "parentUuid": null, "timestamp": "2026-11-12T00:00:00Z", "cwd": "/example", "entrypoint": "claude-desktop", "version": "2.1.260", "message": {"role": "user", "content": "日本語で説明して"}}
+{"type": "assistant", "sessionId": "fixture-claude-code-desktop", "uuid": "assistant-id", "parentUuid": "user-id", "timestamp": "2026-11-12T00:00:00Z", "cwd": "/example", "entrypoint": "claude-desktop", "version": "2.1.260", "message": {"role": "assistant", "content": []}}

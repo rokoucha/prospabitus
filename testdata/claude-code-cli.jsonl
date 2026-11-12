@@ -1,0 +1,1 @@
+{"type": "user", "sessionId": "fixture-claude-code-cli", "uuid": "user-id", "parentUuid": null, "timestamp": "2026-11-12T00:00:00Z", "cwd": "/example", "entrypoint": "cli", "version": "2.1.302", "message": {"role": "user", "content": "日本語で説明して"}}

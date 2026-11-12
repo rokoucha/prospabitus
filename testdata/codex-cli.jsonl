@@ -1,0 +1,3 @@
+{"type": "session_meta", "timestamp": "2026-11-12T00:00:00Z", "payload": {"id": "fixture-codex-cli", "session_id": "fixture-codex-cli", "cli_version": "0.167.0", "cwd": "/example", "source": "exec", "originator": "codex_exec"}}
+{"type": "response_item", "timestamp": "2026-11-12T00:00:01Z", "payload": {"type": "message", "role": "user", "content": [{"type": "input_text", "text": "日本語で説明して"}]}}
+{"type": "response_item", "timestamp": "2026-11-12T00:00:01Z", "payload": {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": "説明します"}]}}

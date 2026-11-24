@@ -1,15 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
     ":dependencyDashboard",
-    "helpers:pinGitHubActionDigests",
-    "customManagers:githubActionsVersions"
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
   ],
-  "automerge": true,
-  "automergeType": "branch",
   "lockFileMaintenance": {
     "enabled": true
   },
-  "minimumReleaseAge": "1 day"
+  "automerge": true,
+  "automergeType": "branch",
+  "packageRules": [
+    {
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "1 day"
+    }
+  ]
 }
